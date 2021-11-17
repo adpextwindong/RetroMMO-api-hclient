@@ -29,8 +29,9 @@ library
         RetroMMOAPI.Environment
         RetroMMOAPI.Unauthenticated
         RetroMMOAPI.Types
-    build-depends:    base ^>=4.13.0.0
+    build-depends:    base >=4.12.0.0 && < 5
                      ,text
                      ,aeson
-                     ,aeson-casing
                      ,time
+                     ,HsOpenSSL
+    extra-lib-dirs: c:/msys64/mingw64/lib
