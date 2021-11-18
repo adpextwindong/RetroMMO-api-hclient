@@ -20,3 +20,9 @@ cabal install --user --extra-include-dirs=/mingw64/include --extra-lib-dirs=/min
 extra-lib path is absolute to the msys64/mingw64 in the cabal file
 
 https://slproweb.com/products/Win32OpenSSL.html
+
+```
+stack build --extra-include-dirs=/c/msys64/mingw64/include
+```
+
+Have libssl.dll sitting in the folder.

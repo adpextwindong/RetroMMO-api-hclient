@@ -30,7 +30,7 @@ resolver:
 #   - auto-update
 #   - wai
 packages:
-- dist-newstyle\tmp\src-21424\HsOpenSSL-0.11.7.2
+- ../HsOpenSSL-0.11.7.2
 - .
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
