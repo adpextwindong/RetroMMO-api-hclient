@@ -12,9 +12,11 @@ import Servant.API (Get, JSON, (:>))
 import Servant.Client (ClientM, runClientM, Scheme(..), mkClientEnv, BaseUrl(..))
 
 import RetroMMOAPI.Environment (Environment, apiEndpoint)
-import RetroMMOAPI.Headers (UserAgentHeader)
+import RetroMMOAPI.Headers (UserAgent, UserAgentHeader)
 
 type RMGet a = UserAgentHeader :> Get '[JSON] a
+
+type RMRequest a = UserAgent -> ClientM a
 
 type Runner a = ClientM a -> IO a
 
