@@ -15,7 +15,7 @@ type User = "users"
           :> Capture "user" Username
           :> RMGet UserDetails
 
-type RegisteredUsers = "registered-users.json"
+type RegisteredUsers = "registered-users"
                      :> RMGet Int
 
 type API =    User
