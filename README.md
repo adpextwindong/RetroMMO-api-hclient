@@ -6,7 +6,7 @@ Features:
 
 - [ ] [Leaderboards](https://play.retro-mmo.com/leaderboards.json)
     - [ ] [Pagination](https://play.retro-mmo.com/leaderboards.json?page=2)
-- [ ] [Online Players](https://play.retro-mmo.com/players.json)
+- [x] [Online Players](https://play.retro-mmo.com/players.json)
 - [x] [Registered Users Total](https://play.retro-mmo.com/registered-users.json)
 - [x] [Search Leaderboard by username](https://play.retro-mmo.com/users/Evan.json)
 

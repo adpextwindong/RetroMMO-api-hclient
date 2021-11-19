@@ -20,12 +20,17 @@ type User = "users"
           :> Capture "user" (JsonExt Username)
           :> RMGet UserDetails
 
+type Players = "players.json"
+             :> RMGet [Username]
+
 type API =    User
          :<|> RegisteredUsers
+         :<|> Players
 
 api :: Proxy API
 api = Proxy
 
 getUser :: JsonExt Username -> RMRequest UserDetails
 registeredUsers :: RMRequest Int
-getUser :<|> registeredUsers = client api
+players :: RMRequest [Username]
+getUser :<|> registeredUsers :<|> players = client api

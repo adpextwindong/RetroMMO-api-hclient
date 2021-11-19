@@ -14,3 +14,4 @@ main = do
     run Production $ do
         getUser (Username "Evan") >>= liftIO . print
         registeredUsers >>= liftIO . print
+        players >>= liftIO . print

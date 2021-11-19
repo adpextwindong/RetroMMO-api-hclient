@@ -14,3 +14,6 @@ getUser name = API.getUser (liftExt name) userAgent
 
 registeredUsers :: ClientM Int
 registeredUsers = API.registeredUsers userAgent
+
+players :: ClientM [Username]
+players = API.players userAgent
