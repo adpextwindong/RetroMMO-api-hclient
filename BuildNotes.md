@@ -1,5 +1,7 @@
 # Build Notes
 
+OpenSSL needs to be installed correctly for HsOpenSSL to build.
+
 ## HsOpenSSL
 
 Ubuntu
@@ -12,17 +14,4 @@ Msys64 Mingw64 shell
 
 ```
 pacman -Sy mingw-w64-x86_64-openssl
-cabal get HsOpenSSL-0.11.4.14
-cd HsOpenSSL-0.11.4.14
-cabal install --user --extra-include-dirs=/mingw64/include --extra-lib-dirs=/mingw64/lib --extra-lib-dirs=/mingw64/bin
 ```
-
-extra-lib path is absolute to the msys64/mingw64 in the cabal file
-
-https://slproweb.com/products/Win32OpenSSL.html
-
-```
-stack build --extra-include-dirs=/c/msys64/mingw64/include
-```
-
-Have libssl.dll sitting in the folder.
