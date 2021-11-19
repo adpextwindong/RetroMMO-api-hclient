@@ -1,5 +1,5 @@
 {-
-
+(
 Copyright (c) 2014, Zalora South East Asia Pte Ltd
 
 All rights reserved.
@@ -33,8 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 This code is from https://github.com/axman6/servant/tree/file-extensions
 
+Its been heavily modified to include basvandijk's idea of being polymorphic.
+
 -}
-{-# LANGUAGE CPP                 #-}
 {-# LANGUAGE DataKinds           #-}
 {-# LANGUAGE DeriveDataTypeable  #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -43,13 +44,15 @@ This code is from https://github.com/axman6/servant/tree/file-extensions
 {-# LANGUAGE TupleSections       #-}
 {-# LANGUAGE TypeFamilies        #-}
 {-# LANGUAGE TypeOperators       #-}
+{-# LANGUAGE FlexibleContexts    #-}
 
-module Servant.API.FileExtension
+module ServantContrib.API.FileExtension
     ( Ext(..)
     , getExt
-    , parseExt
+    --, parseExt
     , renderExt
     , toExtProxy
+    , liftExt
     ) where
 
 import           Control.Monad   ((>=>))
@@ -59,9 +62,8 @@ import           Data.Text       (Text, pack, stripSuffix)
 import           Data.Typeable   (Typeable)
 import           GHC.TypeLits    (Symbol, KnownSymbol, symbolVal)
 import           Web.HttpApiData (ToHttpApiData (..), FromHttpApiData (..))
-#if !MIN_VERSION_base(4,8,0)
-import           Data.Monoid     (mappend)
-#endif
+import           Data.Monoid     ((<>))
+import           Data.Coerce     (Coercible, coerce)
 
 -- | A wrapper around a `Text` value which must be suffixed by the extension `ext`.
 --
@@ -77,47 +79,54 @@ import           Data.Monoid     (mappend)
 -- >>> renderExt x
 -- "mypic.png"
 --
-newtype Ext (ext :: Symbol) = Ext {getFileName :: Text}
+newtype Ext (ext :: Symbol) a = Ext {getBase :: a}
     deriving (Typeable, Eq, Ord)
 
-instance (KnownSymbol ext) => Show (Ext ext) where
+{-
+instance (KnownSymbol ext) => Show (Ext ext a) where
     showsPrec i tt@(Ext t) = showsPrec i (mappend t . pack $ '.':getExt tt)
+-}
 
-instance (KnownSymbol ext) => Read (Ext ext) where
+{-
+instance (KnownSymbol ext) => Read (Ext ext a) where
     readsPrec i str = res
         where
             -- res :: [(Ext ext t, String)]
             res = catMaybes . map f . readsPrec (i+1) $ str
 
-            f :: (Text,String) -> Maybe (Ext ext,String)
+            f :: (Text,String) -> Maybe (Ext ext a,String)
             f (t,s) = fmap (\txt -> (Ext txt,s)) $ stripSuffix (pack $ '.':ext) t
 
-            toExtTy :: [(Ext ext, String)] -> Ext ext
+            toExtTy :: [(Ext ext a, String)] -> Ext ext a
             toExtTy _ = undefined
 
             ext = getExt (toExtTy res)
+-}
 
 
-
-instance (KnownSymbol ext) => ToHttpApiData (Ext ext) where
+instance (KnownSymbol ext, ToHttpApiData a) => ToHttpApiData (Ext ext a) where
     toUrlPiece   = toUrlPiece   . renderExt
     toHeader     = toHeader     . renderExt
     toQueryParam = toQueryParam . renderExt
 
+{-
 
-instance (KnownSymbol ext) => FromHttpApiData (Ext ext) where
+TODO figure out FromHttpApiData
+
+instance (KnownSymbol ext, ToHttpApiData a) => FromHttpApiData (Ext ext a) where
     parseUrlPiece   = parseUrlPiece   >=> parseExt
     parseHeader     = parseHeader     >=> parseExt
     parseQueryParam = parseQueryParam >=> parseExt
+-}
 
-
-toExtProxy :: Ext ext-> Proxy ext
+toExtProxy :: Ext ext a -> Proxy ext
 toExtProxy _ = Proxy
 
-getExt :: KnownSymbol ext => Ext ext -> String
+getExt :: KnownSymbol ext => Ext ext a -> String
 getExt t = symbolVal (toExtProxy t)
 
-parseExt :: (KnownSymbol ext) => String -> Either Text (Ext ext)
+{-
+parseExt :: (KnownSymbol ext) => String -> Either Text (Ext ext a)
 parseExt str = res
     where
         res = case stripSuffix (pack ext) (pack str) of
@@ -126,12 +135,15 @@ parseExt str = res
 
         ext = '.':getExt (toExtTy res)
 
-        toExtTy :: Either Text (Ext ext) -> Ext ext
+        toExtTy :: Either Text (Ext ext a) -> Ext ext a
         toExtTy _ = undefined
+-}
 
-renderExt :: KnownSymbol ext => Ext ext -> Text
-renderExt ee@(Ext t) = mappend t (pack $ '.':getExt ee)
+renderExt :: (KnownSymbol ext, ToHttpApiData a) => Ext ext a -> Text
+renderExt ee@(Ext t) = toUrlPiece t <> (pack $ '.':getExt ee)
 
+liftExt :: (KnownSymbol ext, ToHttpApiData a) => a -> Ext ext a
+liftExt = Ext
 
 -- $setup
 -- >>> import Servant.API

@@ -47,7 +47,7 @@ library
         RetroMMOAPI.Request
         RetroMMOAPI.Headers
         RetroMMOAPI.Unauthenticated.API
-        Servant.API.FileExtension
+        ServantContrib.API.FileExtension
 
 executable test-request
     main-is: Main.hs

@@ -7,17 +7,18 @@ import Data.Proxy
 import Servant.API
 
 import Servant.Client
-
+import ServantContrib.API.FileExtension
 import RetroMMOAPI.Request (RMGet, RMRequest)
-import RetroMMOAPI.Types (Username, UserDetails)
-
---TODO write File extension Ext combinator using axmason6 & basvandijk's ideas
-type User = "users"
-          :> Capture "user" Username
-          :> RMGet UserDetails
+import RetroMMOAPI.Types (Username (..), UserDetails)
 
 type RegisteredUsers = "registered-users"
                      :> RMGet Int
+
+type JsonExt a = Ext "json" a
+
+type User = "users"
+          :> Capture "user" (JsonExt Username)
+          :> RMGet UserDetails
 
 type API =    User
          :<|> RegisteredUsers
@@ -25,6 +26,6 @@ type API =    User
 api :: Proxy API
 api = Proxy
 
-getUser :: Username -> RMRequest UserDetails
+getUser :: JsonExt Username -> RMRequest UserDetails
 registeredUsers :: RMRequest Int
 getUser :<|> registeredUsers = client api
