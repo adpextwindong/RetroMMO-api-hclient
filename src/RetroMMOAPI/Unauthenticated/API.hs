@@ -11,10 +11,10 @@ import ServantContrib.API.FileExtension
 import RetroMMOAPI.Request (RMGet, RMRequest)
 import RetroMMOAPI.Types (Username (..), UserDetails)
 
-type RegisteredUsers = "registered-users"
-                     :> RMGet Int
-
 type JsonExt a = Ext "json" a
+
+type RegisteredUsers = "registered-users.json"
+                     :> RMGet Int
 
 type User = "users"
           :> Capture "user" (JsonExt Username)

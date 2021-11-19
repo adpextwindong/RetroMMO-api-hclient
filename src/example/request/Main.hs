@@ -12,4 +12,5 @@ import RetroMMOAPI.Unauthenticated
 main :: IO ()
 main = do
     run Production $ do
-        getUser (Username "Evan") >>= liftIO. print
+        getUser (Username "Evan") >>= liftIO . print
+        registeredUsers >>= liftIO . print
