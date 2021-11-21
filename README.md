@@ -4,8 +4,8 @@ Haskell client for [RetroMMO's RESTFUL public API](https://github.com/retro-mmo-
 
 Features:
 
-- [ ] [Leaderboards](https://play.retro-mmo.com/leaderboards.json)
-    - [ ] [Pagination](https://play.retro-mmo.com/leaderboards.json?page=2)
+- [x] [Leaderboards](https://play.retro-mmo.com/leaderboards.json)
+    - [x] [Pagination](https://play.retro-mmo.com/leaderboards.json?page=2)
 - [x] [Online Players](https://play.retro-mmo.com/players.json)
 - [x] [Registered Users Total](https://play.retro-mmo.com/registered-users.json)
 - [x] [Search Leaderboard by username](https://play.retro-mmo.com/users/Evan.json)
@@ -18,4 +18,5 @@ This client library is largely modeled after [mdunnio's coinbase-pro library](ht
 
 - [ ] cabal freeze
 - [ ] fix stack build
+- [ ] tests
 - [ ] make import/exports explicit

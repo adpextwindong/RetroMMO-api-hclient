@@ -9,7 +9,7 @@ import Servant.API
 import Servant.Client
 import ServantContrib.API.FileExtension
 import RetroMMOAPI.Request (RMGet, RMRequest)
-import RetroMMOAPI.Types (Username (..), UserDetails)
+import RetroMMOAPI.Types (Username (..), UserDetails, LeaderboardDetails)
 
 type JsonExt a = Ext "json" a
 
@@ -23,9 +23,14 @@ type User = "users"
 type Players = "players.json"
              :> RMGet [Username]
 
+type Leaderboards = "leaderboards.json"
+                  :> QueryParam' '[Optional] "page" Int
+                  :> RMGet [LeaderboardDetails]
+
 type API =    User
          :<|> RegisteredUsers
          :<|> Players
+         :<|> Leaderboards
 
 api :: Proxy API
 api = Proxy
@@ -33,4 +38,5 @@ api = Proxy
 getUser :: JsonExt Username -> RMRequest UserDetails
 registeredUsers :: RMRequest Int
 players :: RMRequest [Username]
-getUser :<|> registeredUsers :<|> players = client api
+leaderboards :: Maybe Int -> RMRequest [LeaderboardDetails]
+getUser :<|> registeredUsers :<|> players :<|> leaderboards = client api
