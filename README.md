@@ -16,7 +16,6 @@ This client library is largely modeled after [mdunnio's coinbase-pro library](ht
 
 ## TODO
 
-- [ ] cabal freeze
-- [ ] fix stack build
 - [ ] tests
+- [ ] docs
 - [ ] make import/exports explicit
