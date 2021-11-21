@@ -30,7 +30,6 @@ resolver:
 #   - auto-update
 #   - wai
 packages:
-- ../HsOpenSSL-0.11.7.2
 - .
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
@@ -54,7 +53,7 @@ packages:
 #
 # Require a specific version of stack, using version ranges
 # require-stack-version: -any # Default
-# require-stack-version: ">=2.5"
+# require-stack-version: ">=2.7"
 #
 # Override the architecture used by stack, especially useful on Windows
 # arch: i386
